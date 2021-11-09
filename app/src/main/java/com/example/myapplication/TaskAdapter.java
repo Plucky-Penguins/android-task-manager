@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.taskNameView.setText(task.getName());
         holder.totalSubtaskView.setText(Integer.toString(task.getSubtasks().size()) + " subtasks");
         holder.daysUntilDue.setText(Long.toString(task.getDaysRemaining()) + " days remaining");
+
+        if(task.isCompleted()) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#24FF00"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#E1E1E1"));
+        }
     }
 
     @Override

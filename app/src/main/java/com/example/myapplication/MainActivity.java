@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         Task t2 = new Task("Do Dishes", LocalDate.of(2022, Month.JANUARY, 1));
         Task t3 = new Task("Fix Window", LocalDate.of(2021, Month.DECEMBER, 3));
 
+        t3.setCompleted(true);
+
         tasks.add(t1);
         tasks.add(t2);
         tasks.add(t3);

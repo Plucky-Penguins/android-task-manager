@@ -16,6 +16,7 @@ public class Task {
     private ArrayList<Subtask> subtasks;
     private long daysRemaining;
     private LocalDate dueDate;
+    private boolean completed;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Task(String name, LocalDate dueDate) {
@@ -23,6 +24,7 @@ public class Task {
         this.dueDate = dueDate;
         this.name = name;
         this.daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), this.dueDate);
+        this.completed = false;
     }
 
     public ArrayList<Subtask> getSubtasks() {
@@ -53,5 +55,13 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
