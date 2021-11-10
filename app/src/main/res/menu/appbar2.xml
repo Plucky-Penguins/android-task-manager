@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/addSubtaskButton"
+        android:title="addSubtaskButton"
+        app:showAsAction="always"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:icon="@drawable/baseline_add_circle_24"/>
+
+</menu>

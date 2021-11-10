@@ -71,4 +71,9 @@ public class Task implements Comparable<Task>{
         return Long.compare(this.getDaysRemaining(), task.getDaysRemaining());
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }

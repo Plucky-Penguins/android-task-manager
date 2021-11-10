@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private LayoutInflater mInflater;
     private List<Task> mData;
 
+
     public TaskAdapter(Context context, List<Task> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
+
+    public Task getTaskAtPosition(int i) {
+        return this.mData.get(i);
+    }
+
 
     @NonNull
     @Override
@@ -39,7 +46,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         if(task.isCompleted()) {
             holder.itemView.setBackgroundColor(Color.parseColor("#24FF00"));
             holder.daysUntilDue.setText("Task Completed");
-        } else {
+        }
+        else if(task.getDaysRemaining() < 0) {
+            Long overdue = Math.abs(task.getDaysRemaining());
+            holder.itemView.setBackgroundColor(Color.parseColor("#FF7474"));
+            holder.daysUntilDue.setText(Long.toString(overdue) + " days overdue!");
+        }
+        else {
             holder.itemView.setBackgroundColor(Color.parseColor("#E1E1E1"));
             holder.daysUntilDue.setText(Long.toString(task.getDaysRemaining()) + " days remaining");
         }
@@ -52,6 +65,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public void sortTaskList() {
         Collections.sort(mData);
+        notifyItemInserted(mData.size());
     }
 
     public void addTask(Task t) {
@@ -77,7 +91,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            // move to subtask view
+            MainActivity.taskClicked(this.getAdapterPosition());
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-public class Subtask {
+public class Subtask implements Comparable<Subtask>{
     private String name;
     private boolean completed;
 
@@ -23,5 +23,10 @@ public class Subtask {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    @Override
+    public int compareTo(Subtask subtask) {
+        return 0;
     }
 }
