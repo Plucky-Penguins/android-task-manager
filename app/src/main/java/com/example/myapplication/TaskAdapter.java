@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -33,18 +34,30 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task task = mData.get(position);
         holder.taskNameView.setText(task.getName());
         holder.totalSubtaskView.setText(Integer.toString(task.getSubtasks().size()) + " subtasks");
-        holder.daysUntilDue.setText(Long.toString(task.getDaysRemaining()) + " days remaining");
+
 
         if(task.isCompleted()) {
             holder.itemView.setBackgroundColor(Color.parseColor("#24FF00"));
+            holder.daysUntilDue.setText("Task Completed");
         } else {
             holder.itemView.setBackgroundColor(Color.parseColor("#E1E1E1"));
+            holder.daysUntilDue.setText(Long.toString(task.getDaysRemaining()) + " days remaining");
         }
     }
 
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void sortTaskList() {
+        Collections.sort(mData);
+    }
+
+    public void addTask(Task t) {
+        mData.add(t);
+        sortTaskList();
+        notifyItemInserted(mData.size());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

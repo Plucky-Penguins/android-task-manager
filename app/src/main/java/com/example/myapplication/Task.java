@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.time.temporal.ChronoUnit;
 
-public class Task {
+public class Task implements Comparable<Task>{
     private String name;
     private ArrayList<Subtask> subtasks;
     private long daysRemaining;
@@ -63,5 +63,12 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        this.setDaysRemaining(Integer.MAX_VALUE);
     }
+
+    @Override
+    public int compareTo(Task task) {
+        return Long.compare(this.getDaysRemaining(), task.getDaysRemaining());
+    }
+
 }
