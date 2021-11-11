@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +30,9 @@ import java.util.ArrayList;
 
 public class TaskActivity extends AppCompatActivity {
     public static SubtaskAdapter adapter;
+    public static ProgressBar progressBar;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +44,15 @@ public class TaskActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SubtaskAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
+
+        progressBar = findViewById(R.id.ProgressBar);
+        updateProgressBar();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void updateProgressBar() {
+        int progress = MainActivity.currentTask.getProgress();
+        progressBar.setProgress(progress, true);
     }
 
     @Override
@@ -65,7 +80,6 @@ public class TaskActivity extends AppCompatActivity {
                     .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getApplicationContext(), "Entered: "+et.getText().toString(), Toast.LENGTH_LONG).show();
                             adapter.addSubtask(new Subtask(et.getText().toString()));
                         }
                     })

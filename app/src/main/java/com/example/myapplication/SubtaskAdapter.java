@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
@@ -56,11 +58,13 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         notifyItemInserted(mData.size());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addSubtask(Subtask st) {
         mData.add(st);
         sortTaskList();
         notifyItemInserted(mData.size());
         MainActivity.adapter.notifyDataSetChanged();
+        TaskActivity.updateProgressBar();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -73,6 +77,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         }
 
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
@@ -83,6 +88,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
                 mData.get(getAdapterPosition()).setCompleted(true);
             }
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
+            TaskActivity.updateProgressBar();
             MainActivity.adapter.notifyDataSetChanged();
         }
 

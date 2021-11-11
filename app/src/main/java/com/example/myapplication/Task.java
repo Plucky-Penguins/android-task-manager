@@ -83,4 +83,16 @@ public class Task implements Comparable<Task>{
         return this.name;
     }
 
+    public int getProgress() {
+        if (subtasks.size() == 0) {
+            return 0;
+        }
+        int completed = 0;
+        for(Subtask st : subtasks) {
+            if (st.isCompleted()) {
+                completed++;
+            }
+        }
+        return (completed*100/subtasks.size()*100)/100;
+    }
 }
