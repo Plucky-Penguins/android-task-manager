@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 public class TaskActivity extends AppCompatActivity {
     public static SubtaskAdapter adapter;
     public static ProgressBar progressBar;
+    private static Context mContext;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -38,6 +41,7 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         getSupportActionBar().setTitle(MainActivity.currentTask.getName());
+        mContext = this;
         
         ArrayList<Subtask> tasks = MainActivity.currentTask.getSubtasks();
         RecyclerView recyclerView = findViewById(R.id.rvSubtasks);
@@ -61,6 +65,32 @@ public class TaskActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public static void deleteTaskDialog(Subtask st) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder
+                .setTitle("Delete Subtask " + '"' + st.getName() + "?" + '"')
+                .setMessage("Are you sure you want to delete this subtask?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        TaskActivity.adapter.deleteSubtask(st);
+                        Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -78,6 +108,7 @@ public class TaskActivity extends AppCompatActivity {
             builder
                     .setCancelable(false)
                     .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             adapter.addSubtask(new Subtask(et.getText().toString()));

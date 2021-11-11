@@ -23,7 +23,8 @@
 
         </activity>
         <activity android:name=".TaskActivity"
-            android:exported="true">
+            android:exported="true"
+            >
 
         </activity>
     </application>

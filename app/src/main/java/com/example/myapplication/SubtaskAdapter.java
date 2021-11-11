@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -44,8 +45,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         else {
             holder.subtaskNameView.setBackgroundColor(Color.parseColor("#C4C4C4"));
         }
-
-
     }
 
     @Override
@@ -67,21 +66,30 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         TaskActivity.updateProgressBar();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void deleteSubtask(Subtask st) {
+        mData.remove(st);
+        sortTaskList();
+        TaskActivity.updateProgressBar();
+        notifyDataSetChanged();
+        MainActivity.adapter.notifyDataSetChanged();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView subtaskNameView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subtaskNameView = itemView.findViewById(R.id.subtaskName);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-
             if (mData.get(getAdapterPosition()).isCompleted()) {
                 mData.get(getAdapterPosition()).setCompleted(false);
             } else {
@@ -90,9 +98,17 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
             TaskActivity.updateProgressBar();
             MainActivity.adapter.notifyDataSetChanged();
+
         }
 
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public boolean onLongClick(View view) {
+            Subtask st = mData.get(getAdapterPosition());
+            TaskActivity.deleteTaskDialog(st);
+            return false;
+        }
     }
 
 }

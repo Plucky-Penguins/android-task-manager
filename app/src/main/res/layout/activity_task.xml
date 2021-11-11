@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:longClickable="true">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSubtasks"
         android:layout_width="match_parent"
-        android:layout_height="480dp" >
+        android:layout_height="480dp"
+        >
 
 
     </androidx.recyclerview.widget.RecyclerView>
