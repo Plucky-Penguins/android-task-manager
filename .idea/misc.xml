@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Desktop/android-task-manager/app/src/main/res/layout/activity_add.xml" value="0.20208333333333334" />
+        <entry key="..\:/Desktop/android-task-manager/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
+        <entry key="..\:/Desktop/android-task-manager/app/src/main/res/layout/addtask_view.xml" value="0.33" />
+        <entry key="..\:/Desktop/android-task-manager/app/src/main/res/layout/recyclerview_row.xml" value="0.20208333333333334" />
         <entry key="..\:/develop/android-task-manager/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.35625" />
         <entry key="..\:/develop/android-task-manager/app/src/main/res/drawable/baseline_add_circle_24.xml" value="0.35625" />
         <entry key="..\:/develop/android-task-manager/app/src/main/res/drawable/baseline_dark_mode_20.xml" value="0.35625" />

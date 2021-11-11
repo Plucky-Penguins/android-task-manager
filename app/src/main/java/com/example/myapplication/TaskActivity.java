@@ -1,10 +1,21 @@
 package com.example.myapplication;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +51,32 @@ public class TaskActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.addSubtaskButton) {
 
+            LayoutInflater li = LayoutInflater.from(getApplicationContext());
+            View promptsView = li.inflate(R.layout.addtask_view, null);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(promptsView);
+
+            TextView tv = promptsView.findViewById(R.id.newSubtaskTitle);
+            EditText et = promptsView.findViewById(R.id.newSubtaskName);
+
+            builder
+                    .setCancelable(false)
+                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getApplicationContext(), "Entered: "+et.getText().toString(), Toast.LENGTH_LONG).show();
+                            adapter.addSubtask(new Subtask(et.getText().toString()));
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

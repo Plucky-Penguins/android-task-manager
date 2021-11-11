@@ -56,10 +56,11 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         notifyItemInserted(mData.size());
     }
 
-    public void addTask(Subtask st) {
+    public void addSubtask(Subtask st) {
         mData.add(st);
         sortTaskList();
         notifyItemInserted(mData.size());
+        MainActivity.adapter.notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
