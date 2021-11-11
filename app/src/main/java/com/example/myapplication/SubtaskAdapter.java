@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
@@ -35,8 +38,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         Subtask stask = mData.get(position);
         holder.subtaskNameView.setText(stask.getName());
 
-
-
         if(stask.isCompleted()) {
             holder.subtaskNameView.setBackgroundColor(Color.parseColor("#24FF00"));
 
@@ -44,8 +45,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         else {
             holder.subtaskNameView.setBackgroundColor(Color.parseColor("#C4C4C4"));
         }
-
-
     }
 
     @Override
@@ -58,35 +57,58 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         notifyItemInserted(mData.size());
     }
 
-    public void addTask(Subtask st) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void addSubtask(Subtask st) {
         mData.add(st);
         sortTaskList();
         notifyItemInserted(mData.size());
+        MainActivity.adapter.notifyDataSetChanged();
+        TaskActivity.updateProgressBar();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void deleteSubtask(Subtask st) {
+        mData.remove(st);
+        sortTaskList();
+        TaskActivity.updateProgressBar();
+        notifyDataSetChanged();
+        MainActivity.adapter.notifyDataSetChanged();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView subtaskNameView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subtaskNameView = itemView.findViewById(R.id.subtaskName);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-
             if (mData.get(getAdapterPosition()).isCompleted()) {
                 mData.get(getAdapterPosition()).setCompleted(false);
             } else {
                 mData.get(getAdapterPosition()).setCompleted(true);
             }
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
+            TaskActivity.updateProgressBar();
+            MainActivity.adapter.notifyDataSetChanged();
+
         }
 
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public boolean onLongClick(View view) {
+            Subtask st = mData.get(getAdapterPosition());
+            TaskActivity.deleteTaskDialog(st);
+            return false;
+        }
     }
 
 }

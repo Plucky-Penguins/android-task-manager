@@ -4,6 +4,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.datastore.preferences.core.Preferences;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,8 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import org.json.JSONObject;
 
+=======
+import java.lang.reflect.Array;
+>>>>>>> basic-ui
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -63,9 +69,13 @@ public class MainActivity extends AppCompatActivity {
             subtasks.add(st2);
             subtasks.add(st3);
 
+            ArrayList<Subtask> subtasks2 = new ArrayList<>();
+            subtasks2.add(new Subtask("hello"));
+            subtasks2.add(new Subtask("world"));
+
             t1.setSubtasks(subtasks);
             t2.setSubtasks(subtasks);
-            t3.setSubtasks(subtasks);
+            t3.setSubtasks(subtasks2);
 
             RecyclerView recyclerView = findViewById(R.id.rvTasks);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -100,6 +110,31 @@ public class MainActivity extends AppCompatActivity {
         for (Task task_name : tasks) {
 
         }
+    }
+
+    public static void deleteTaskDialog(Task t) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder
+                .setTitle("Delete Task " + '"' + t.getName() + "?" + '"')
+                .setMessage("Are you sure you want to delete this task?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.adapter.deleteTask(t);
+                        Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public static void taskClicked(int adapterPosition) {

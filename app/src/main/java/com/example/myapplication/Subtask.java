@@ -29,4 +29,18 @@ public class Subtask implements Comparable<Subtask>{
     public int compareTo(Subtask subtask) {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        final Subtask other = (Subtask) obj;
+        if (other.getName().equals(this.getName())) {
+            return true;
+        }
+
+        return false;
+    }
 }
