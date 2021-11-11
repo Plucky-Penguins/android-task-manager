@@ -1,7 +1,11 @@
 package com.example.myapplication;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static Task currentTask = null;
 
     private static Context mContext;
+    public static boolean darkMode = false;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -95,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.darkButton:
                 //TODO
+                if (darkMode) {
+                    darkMode = false;
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+                } else {
+                    darkMode = true;
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+                }
                 break;
             default:
                 break;
