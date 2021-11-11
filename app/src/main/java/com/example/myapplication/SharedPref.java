@@ -75,7 +75,7 @@ public class SharedPref {
             LocalDate dueDate = createLocalDateFromJson((JSONObject) indexObject.get("dueDate"));
             Task indexTask = new Task((String) indexObject.get("name"), dueDate);
             // iterate through subtask jsonArray
-            // add them
+            // add them ??? FOR SOME REASON ITS NOT WORKING ADJAGKLSJLK
             JSONArray subtaskJSONArray = (JSONArray) indexObject.get("subtasks");
             ArrayList<Subtask> subtaskList = new ArrayList<>();
             for (int sub_i = 0; sub_i < subtaskJSONArray.length(); sub_i++) {
