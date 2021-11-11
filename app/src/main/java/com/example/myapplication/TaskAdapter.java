@@ -31,6 +31,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return this.mData.get(i);
     }
 
+    public List<Task> getmData() {
+        return mData;
+    }
+
 
     @NonNull
     @Override

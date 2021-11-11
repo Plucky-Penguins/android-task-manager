@@ -7,67 +7,74 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.rxjava2.RxPreferenceDataStoreBuilder;
-import androidx.datastore.rxjava2.RxDataStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-<<<<<<< HEAD
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-=======
 import java.lang.reflect.Array;
->>>>>>> basic-ui
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
 
     public static TaskAdapter adapter = null;
     public static Task currentTask = null;
 
     private static Context mContext;
-    public static boolean darkMode = false;
 
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    // public static final String darkModeKey = "darkMode";
+    // public static boolean darkMode = false;
 
+    // public static final String sharedPref = "TaskManagerSharedPref";
+    // public static final String sharedPrefTasksKey = "Tasks";
+    // public static final String sharedPrefDefaultTaskData = "Tasks could not be found";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        recyclerView = findViewById(R.id.rvTasks);
+
+        SharedPref.init(getApplicationContext());
 
         if (adapter == null) {
             // test populating recycle view
             Task t1 = new Task("Fix Spelling", LocalDate.of(2021, Month.NOVEMBER, 7));
             Task t2 = new Task("Do Dishes", LocalDate.of(2022, Month.NOVEMBER, 1));
             Task t3 = new Task("Fix Window", LocalDate.of(2021, Month.DECEMBER, 3));
-            tasks.add(t1);
-            tasks.add(t2);
-            tasks.add(t3);
 
             ArrayList<Subtask> subtasks = new ArrayList<>();
-            Subtask st1 = new Subtask("subtask 1");
-            Subtask st2 = new Subtask("subtask 2");
-            Subtask st3 = new Subtask("subtask 3");
-            subtasks.add(st1);
-            subtasks.add(st2);
-            subtasks.add(st3);
+//            Subtask st1 = new Subtask("subtask 1");
+//            Subtask st2 = new Subtask("subtask 2");
+//            Subtask st3 = new Subtask("subtask 3");
+//            subtasks.add(st1);
+//            subtasks.add(st2);
+//            subtasks.add(st3);
 
             ArrayList<Subtask> subtasks2 = new ArrayList<>();
             subtasks2.add(new Subtask("hello"));
@@ -77,13 +84,21 @@ public class MainActivity extends AppCompatActivity {
             t2.setSubtasks(subtasks);
             t3.setSubtasks(subtasks2);
 
-            RecyclerView recyclerView = findViewById(R.id.rvTasks);
+            recyclerView = findViewById(R.id.rvTasks);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            ArrayList<Task> tasks = new ArrayList<>();
             adapter = new TaskAdapter(this, tasks);
             recyclerView.setAdapter(adapter);
 
+            /*
+             * Tasks added with SharedPrefs
+             *
+             * adapter.addTask(t3);
+             * adapter.addTask(t2);
+             */
             adapter.addTask(t3);
             adapter.addTask(t2);
+
         } else {
             RecyclerView recyclerView = findViewById(R.id.rvTasks);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -92,24 +107,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
+        String jsonRead = SharedPref.read(SharedPref.TASKS_KEY, SharedPref.DEFAULT_TASKS);
+        // Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        Log.e("json", jsonRead);
+        try {
+            List<Task> taskList = SharedPref.jsonStringtoTaskList(jsonRead);
+            updateViewFromSharedPrefsTaskList(taskList);
+            updateDarkMode();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+
+    public void updateViewFromSharedPrefsTaskList(List<Task> TaskList) {
+        adapter = new TaskAdapter(this, TaskList);
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    private void updateDarkMode() {
+        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        Log.e("dark", darkMode.toString());
+
+        /*
+         * Causes an infinite loop LOL
+         */
+//        if (darkMode) {
+//            SharedPref.write(SharedPref.DARKMODEKEY, true);
+//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+//            Log.e("dark", "D");
+//        }
+//        else {
+//        SharedPref.write(SharedPref.DARKMODEKEY, false);
+//        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+//        Log.e("light", "L");
+//        }
+    }
+
 
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    /**
-     * Write the list of objects to a json file
-     */
-    public void writeToJson() {
-        JSONObject json = new JSONObject();
-        for (Task task_name : tasks) {
-
-        }
+        SharedPref.writeToTasks();
     }
 
     public static void deleteTaskDialog(Task t) {
@@ -160,17 +204,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.textButton:
-                //TODO
+                // TODO
                 break;
             case R.id.darkButton:
-                //TODO
-                if (darkMode) {
-                    darkMode = false;
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
-                } else {
-                    darkMode = true;
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-                }
+                // TODO
+                updateDarkMode();
                 break;
             default:
                 break;
