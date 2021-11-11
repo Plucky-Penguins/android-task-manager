@@ -35,8 +35,6 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         Subtask stask = mData.get(position);
         holder.subtaskNameView.setText(stask.getName());
 
-
-
         if(stask.isCompleted()) {
             holder.subtaskNameView.setBackgroundColor(Color.parseColor("#24FF00"));
 
@@ -84,6 +82,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
                 mData.get(getAdapterPosition()).setCompleted(true);
             }
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
+            MainActivity.adapter.notifyDataSetChanged();
         }
 
 

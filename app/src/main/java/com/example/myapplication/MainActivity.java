@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -53,9 +54,13 @@ public class MainActivity extends AppCompatActivity {
             subtasks.add(st2);
             subtasks.add(st3);
 
+            ArrayList<Subtask> subtasks2 = new ArrayList<>();
+            subtasks2.add(new Subtask("hello"));
+            subtasks2.add(new Subtask("world"));
+
             t1.setSubtasks(subtasks);
             t2.setSubtasks(subtasks);
-            t3.setSubtasks(subtasks);
+            t3.setSubtasks(subtasks2);
 
             RecyclerView recyclerView = findViewById(R.id.rvTasks);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));

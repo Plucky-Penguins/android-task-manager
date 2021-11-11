@@ -40,8 +40,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = mData.get(position);
         holder.taskNameView.setText(task.getName());
-        holder.totalSubtaskView.setText(Integer.toString(task.getSubtasks().size()) + " subtasks");
 
+        int completedCount = 0;
+        for (Subtask t : task.getSubtasks()) {
+            if (t.isCompleted()) {
+                completedCount++;
+            }
+        }
+
+
+        if (completedCount == task.getSubtasks().size()) {
+            task.setCompleted(true);
+        } else {
+            task.setCompleted(false);
+        }
+
+
+
+        holder.totalSubtaskView.setText(Integer.toString(completedCount) + "/" + Integer.toString(task.getSubtasks().size()) + " subtasks");
 
         if(task.isCompleted()) {
             holder.itemView.setBackgroundColor(Color.parseColor("#24FF00"));

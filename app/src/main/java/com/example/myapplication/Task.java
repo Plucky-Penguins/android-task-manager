@@ -17,6 +17,7 @@ public class Task implements Comparable<Task>{
     private long daysRemaining;
     private LocalDate dueDate;
     private boolean completed;
+    private long storedDaysRemaining;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Task(String name, LocalDate dueDate) {
@@ -63,7 +64,13 @@ public class Task implements Comparable<Task>{
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
-        this.setDaysRemaining(Integer.MAX_VALUE);
+        if (this.completed) {
+            this.storedDaysRemaining = this.daysRemaining;
+            this.setDaysRemaining(Integer.MAX_VALUE);
+        } else if (this.storedDaysRemaining != 0){
+            this.setDaysRemaining(this.storedDaysRemaining);
+        }
+
     }
 
     @Override
