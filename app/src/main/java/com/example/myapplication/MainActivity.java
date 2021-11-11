@@ -6,6 +6,9 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.rxjava2.RxPreferenceDataStoreBuilder;
+import androidx.datastore.rxjava2.RxDataStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -31,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private static Context mContext;
     public static boolean darkMode = false;
 
+    private static ArrayList<Task> tasks = new ArrayList<>();
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (adapter == null) {
             // test populating recycle view
-            ArrayList<Task> tasks = new ArrayList<>();
             Task t1 = new Task("Fix Spelling", LocalDate.of(2021, Month.NOVEMBER, 7));
             Task t2 = new Task("Do Dishes", LocalDate.of(2022, Month.NOVEMBER, 1));
             Task t3 = new Task("Fix Window", LocalDate.of(2021, Month.DECEMBER, 3));
+            tasks.add(t1);
+            tasks.add(t2);
+            tasks.add(t3);
 
             ArrayList<Subtask> subtasks = new ArrayList<>();
             Subtask st1 = new Subtask("subtask 1");
@@ -72,6 +82,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    /**
+     * Write the list of objects to a json file
+     */
+    public void writeToJson() {
+        JSONObject json = new JSONObject();
+        for (Task task_name : tasks) {
+
+        }
+    }
+
     public static void taskClicked(int adapterPosition) {
         currentTask = adapter.getTaskAtPosition(adapterPosition);
         Intent i =  new Intent(mContext, TaskActivity.class);
@@ -93,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.addTaskButton:
                 Intent i =  new Intent(getApplicationContext(), AddActivity.class);
                 startActivity(i);
-
                 break;
             case R.id.textButton:
                 //TODO
