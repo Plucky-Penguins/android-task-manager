@@ -64,6 +64,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         notifyItemInserted(mData.size());
         MainActivity.adapter.notifyDataSetChanged();
         TaskActivity.updateProgressBar();
+        SharedPref.writeToTasks();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -73,6 +74,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         TaskActivity.updateProgressBar();
         notifyDataSetChanged();
         MainActivity.adapter.notifyDataSetChanged();
+        SharedPref.writeToTasks();
     }
 
 
@@ -95,6 +97,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
             } else {
                 mData.get(getAdapterPosition()).setCompleted(true);
             }
+            SharedPref.writeToTasks();
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
             TaskActivity.updateProgressBar();
             MainActivity.adapter.notifyDataSetChanged();

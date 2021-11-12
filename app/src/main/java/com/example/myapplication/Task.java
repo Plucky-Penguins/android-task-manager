@@ -28,12 +28,21 @@ public class Task implements Comparable<Task>{
         this.completed = false;
     }
 
+    public void addSubTask(Subtask st) {
+        this.subtasks.add(st);
+    }
+
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
     }
 
     public void setSubtasks(ArrayList<Subtask> subtasks) {
-        this.subtasks = subtasks;
+        this.subtasks.clear();
+        this.subtasks.addAll(subtasks);
+    }
+
+    public int getSubtaskSize() {
+        return this.subtasks.size();
     }
 
     public long getDaysRemaining() {
@@ -80,7 +89,7 @@ public class Task implements Comparable<Task>{
 
     @Override
     public String toString() {
-        return this.name;
+        return this.name + this.subtasks.toString();
     }
 
     public int getProgress() {

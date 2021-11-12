@@ -26,6 +26,11 @@ public class Subtask implements Comparable<Subtask>{
     }
 
     @Override
+    public String toString() {
+        return this.name + " | " + this.completed;
+    }
+
+    @Override
     public int compareTo(Subtask subtask) {
         return 0;
     }

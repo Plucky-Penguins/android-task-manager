@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,6 +81,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
+    public void loadTaskList(List<Task> taskList) {
+        this.mData.clear();
+        this.mData.addAll(taskList);
+    }
+
     @Override
     public int getItemCount() {
         return mData.size();
@@ -94,6 +100,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         mData.add(t);
         sortTaskList();
         notifyItemInserted(mData.size());
+        SharedPref.writeToTasks();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

@@ -67,7 +67,6 @@ public class AddActivity extends AppCompatActivity {
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
         Long dateLong = calendarView.getDate();
-        Log.e("date", dateLong.toString());
         LocalDate date = Instant.ofEpochMilli(dateLong).atZone(ZoneId.systemDefault()).toLocalDate();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

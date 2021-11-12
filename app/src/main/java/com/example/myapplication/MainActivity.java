@@ -62,48 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPref.init(getApplicationContext());
 
-        if (adapter == null) {
-            // test populating recycle view
-            Task t1 = new Task("Fix Spelling", LocalDate.of(2021, Month.NOVEMBER, 7));
-            Task t2 = new Task("Do Dishes", LocalDate.of(2022, Month.NOVEMBER, 1));
-            Task t3 = new Task("Fix Window", LocalDate.of(2021, Month.DECEMBER, 3));
-
-            ArrayList<Subtask> subtasks = new ArrayList<>();
-//            Subtask st1 = new Subtask("subtask 1");
-//            Subtask st2 = new Subtask("subtask 2");
-//            Subtask st3 = new Subtask("subtask 3");
-//            subtasks.add(st1);
-//            subtasks.add(st2);
-//            subtasks.add(st3);
-
-            ArrayList<Subtask> subtasks2 = new ArrayList<>();
-            subtasks2.add(new Subtask("hello"));
-            subtasks2.add(new Subtask("world"));
-
-            t1.setSubtasks(subtasks);
-            t2.setSubtasks(subtasks);
-            t3.setSubtasks(subtasks2);
-
-            recyclerView = findViewById(R.id.rvTasks);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            ArrayList<Task> tasks = new ArrayList<>();
-            adapter = new TaskAdapter(this, tasks);
-            recyclerView.setAdapter(adapter);
-
-            /*
-             * Tasks added with SharedPrefs
-             *
-             * adapter.addTask(t3);
-             * adapter.addTask(t2);
-             */
-            adapter.addTask(t3);
-            adapter.addTask(t2);
-
-        } else {
-            RecyclerView recyclerView = findViewById(R.id.rvTasks);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
-        }
+        recyclerView = findViewById(R.id.rvTasks);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ArrayList<Task> tasks = new ArrayList<>();
+        adapter = new TaskAdapter(this, tasks);
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -112,27 +75,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String jsonRead = SharedPref.read(SharedPref.TASKS_KEY, SharedPref.DEFAULT_TASKS);
+
         // Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
-        Log.e("json", jsonRead);
         try {
             List<Task> taskList = SharedPref.jsonStringtoTaskList(jsonRead);
-            updateViewFromSharedPrefsTaskList(taskList);
+            if (adapter != null) {
+                adapter.loadTaskList(taskList);
+                SharedPref.writeToTasks();
+                adapter.notifyDataSetChanged();
+            }
+
             updateDarkMode();
+
         } catch (JSONException e) {
+
             e.printStackTrace();
         }
     }
 
-
-    public void updateViewFromSharedPrefsTaskList(List<Task> TaskList) {
-        adapter = new TaskAdapter(this, TaskList);
-        recyclerView.setAdapter(adapter);
-    }
-
-
     private void updateDarkMode() {
-        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
-        Log.e("dark", darkMode.toString());
+        //Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        //Log.e("dark", darkMode.toString());
 
         /*
          * Causes an infinite loop LOL
