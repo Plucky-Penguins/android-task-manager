@@ -94,15 +94,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDarkMode() {
-        //Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
-        //Log.e("dark", darkMode.toString());
+        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+    }
+
+    private void toggleDarkMode() {
+        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+
+        if (darkMode) {
+            SharedPref.write(SharedPref.DARKMODEKEY, false);
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+        } else {
+            SharedPref.write(SharedPref.DARKMODEKEY, true);
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+        }
 
         /*
          * Causes an infinite loop LOL
          */
 //        if (darkMode) {
 //            SharedPref.write(SharedPref.DARKMODEKEY, true);
-//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+//
 //            Log.e("dark", "D");
 //        }
 //        else {
@@ -171,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.darkButton:
                 // TODO
-                updateDarkMode();
+                toggleDarkMode();
                 break;
             default:
                 break;

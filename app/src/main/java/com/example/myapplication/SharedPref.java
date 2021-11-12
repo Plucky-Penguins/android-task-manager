@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -63,6 +62,10 @@ public class SharedPref {
 
     public static Integer read(String key, int defValue) {
         return mSharedPref.getInt(key, defValue);
+    }
+
+    public static boolean read(String key, boolean defValue) {
+        return mSharedPref.getBoolean(key, defValue);
     }
 
     public static void write(String key, Integer value) {
