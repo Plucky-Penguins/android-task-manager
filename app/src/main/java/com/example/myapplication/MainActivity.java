@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
         Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
         if (darkMode) {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+            SharedPref.currentDark = true;
         } else {
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            SharedPref.currentDark = false;
         }
     }
 
@@ -100,10 +103,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (darkMode) {
             SharedPref.write(SharedPref.DARKMODEKEY, false);
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            SharedPref.currentDark = false;
         } else {
             SharedPref.write(SharedPref.DARKMODEKEY, true);
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+            SharedPref.currentDark = true;
         }
     }
 
@@ -164,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
                         dialogInterface.cancel();
                     }
                 });
+        if (SharedPref.currentDark) {
+            builder
+                    .setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + t.getName() + '\"' + "?" + "</font>"));
+        }
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

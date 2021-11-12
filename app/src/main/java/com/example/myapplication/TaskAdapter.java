@@ -66,7 +66,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.totalSubtaskView.setText(Integer.toString(completedCount) + "/" + Integer.toString(task.getSubtasks().size()) + " subtasks");
 
         if(task.isCompleted()) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#24FF00"));
+            holder.itemView.setBackgroundColor(Color.parseColor("#1abf00"));
             holder.daysUntilDue.setText("Task Completed");
         }
         else if(task.getDaysRemaining() < 0) {

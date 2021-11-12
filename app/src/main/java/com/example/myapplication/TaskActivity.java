@@ -1,12 +1,15 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -67,9 +70,8 @@ public class TaskActivity extends AppCompatActivity {
 
     public static void deleteTaskDialog(Subtask st) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
         builder
-                .setTitle("Delete Subtask " + '"' + st.getName() + "?" + '"')
+                .setTitle("Delete Subtask " + '"' + st.getName() + '"' + "?" )
                 .setMessage("Are you sure you want to delete this subtask?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -85,11 +87,17 @@ public class TaskActivity extends AppCompatActivity {
                         dialogInterface.cancel();
                     }
                 });
+        if (SharedPref.currentDark) {
+            builder
+                    .setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + st.getName() + '\"' + "?" + "</font>"));
+        }
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
 
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -107,6 +115,16 @@ public class TaskActivity extends AppCompatActivity {
 
             EditText et = promptsView.findViewById(R.id.newSubtaskName);
             et.setTextSize(TypedValue.COMPLEX_UNIT_SP,20*MainActivity.textScale);
+            if (SharedPref.currentDark) {
+                // dark mode config
+                tv.setTextColor(Color.parseColor("#FFFFFF"));
+                et.setTextColor(Color.parseColor("#FFFFFF"));
+                et.setHintTextColor(Color.parseColor("#FFFFFF"));
+            } else {
+                // light mode config
+                tv.setTextColor(Color.parseColor("#000000"));
+                et.setTextColor(Color.parseColor("#000000"));
+            }
 
             builder
                     .setCancelable(false)

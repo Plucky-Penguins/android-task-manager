@@ -39,7 +39,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         holder.subtaskNameView.setText(stask.getName());
 
         if(stask.isCompleted()) {
-            holder.subtaskNameView.setBackgroundColor(Color.parseColor("#24FF00"));
+            holder.subtaskNameView.setBackgroundColor(Color.parseColor("#1abf00"));
 
         }
         else {
