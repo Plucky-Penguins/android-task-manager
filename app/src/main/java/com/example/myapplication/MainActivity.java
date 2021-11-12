@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,15 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static TaskAdapter adapter = null;
     public static Task currentTask = null;
+    public static int textScale = 1;
 
     private static Context mContext;
-
-    // public static final String darkModeKey = "darkMode";
-    // public static boolean darkMode = false;
-
-    // public static final String sharedPref = "TaskManagerSharedPref";
-    // public static final String sharedPrefTasksKey = "Tasks";
-    // public static final String sharedPrefDefaultTaskData = "Tasks could not be found";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -67,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Task> tasks = new ArrayList<>();
         adapter = new TaskAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -76,16 +68,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         String jsonRead = SharedPref.read(SharedPref.TASKS_KEY, SharedPref.DEFAULT_TASKS);
 
-        // Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
         try {
             List<Task> taskList = SharedPref.jsonStringtoTaskList(jsonRead);
             if (adapter != null) {
                 adapter.loadTaskList(taskList);
+                adapter.sortTaskList();
                 SharedPref.writeToTasks();
-                adapter.notifyDataSetChanged();
+                refreshAdapter();
             }
 
             updateDarkMode();
+            updateTextSize();
 
         } catch (JSONException e) {
 
@@ -112,20 +105,36 @@ public class MainActivity extends AppCompatActivity {
             SharedPref.write(SharedPref.DARKMODEKEY, true);
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
         }
+    }
 
-        /*
-         * Causes an infinite loop LOL
-         */
-//        if (darkMode) {
-//            SharedPref.write(SharedPref.DARKMODEKEY, true);
-//
-//            Log.e("dark", "D");
-//        }
-//        else {
-//        SharedPref.write(SharedPref.DARKMODEKEY, false);
-//        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
-//        Log.e("light", "L");
-//        }
+    private void updateTextSize() {
+        Boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
+        if (largeText) {
+            textScale = 2;
+        } else {
+            textScale = 1;
+        }
+        refreshAdapter();
+    }
+
+    public void refreshAdapter() {
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.notifyDataSetChanged();
+    }
+
+    private void toggleTextSize() {
+        Boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
+        if (largeText) {
+            SharedPref.write(SharedPref.LARGETEXTKEY, false);
+            textScale = 1;
+        } else {
+            SharedPref.write(SharedPref.LARGETEXTKEY, true);
+            textScale = 2;
+        }
+        updateTextSize();
     }
 
 
@@ -183,10 +192,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.textButton:
-                // TODO
+                toggleTextSize();
                 break;
             case R.id.darkButton:
-                // TODO
                 toggleDarkMode();
                 break;
             default:

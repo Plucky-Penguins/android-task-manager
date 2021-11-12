@@ -3,7 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -29,6 +29,8 @@ import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
     int selectedDayOfMonth = 0;
+    int selectedMonth = 0;
+    int selectedYear = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,20 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        EditText et = findViewById(R.id.editTextTaskName);
+        et.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
+
+        Button bt = findViewById(R.id.addNewTaskButton);
+        bt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
+
         CalendarView cv = findViewById(R.id.calendarView);
         cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 selectedDayOfMonth = i2;
+                selectedYear = i;
+                selectedMonth = i1+1;
             }
         });
     }
@@ -76,10 +86,18 @@ public class AddActivity extends AppCompatActivity {
             selectedDayOfMonth = date.getDayOfMonth();
         }
 
+        if (selectedYear == 0) {
+            selectedYear = date.getYear();
+        }
+
+        if (selectedMonth == 0) {
+            selectedMonth = Integer.parseInt(date.getMonth().toString());
+        }
+
         if (taskName.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Error: Specify the task name", Toast.LENGTH_SHORT).show();
         } else {
-            Task newTask = new Task(taskName, LocalDate.of(date.getYear(), date.getMonth(), selectedDayOfMonth));
+            Task newTask = new Task(taskName, LocalDate.of(selectedYear, Month.of(selectedMonth), selectedDayOfMonth));
             MainActivity.adapter.addTask(newTask);
             SharedPref.writeToTasks();
             Intent i =  new Intent(getApplicationContext(), MainActivity.class);

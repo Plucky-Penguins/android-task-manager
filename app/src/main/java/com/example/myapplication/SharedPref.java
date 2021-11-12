@@ -22,6 +22,9 @@ public class SharedPref {
     public static final String DARKMODEKEY = "DARKMODE";
     public static final boolean DEFAULT_DARK = false;
 
+    public static final String LARGETEXTKEY = "LARGETEXT";
+    public static final boolean DEFAULT_LARGE = false;
+
     public static final String TASKS_KEY = "TASKS";
     public static final String DEFAULT_TASKS = "[{Name: No tasks}]";
 
@@ -43,6 +46,7 @@ public class SharedPref {
 
     public static void writeToTasks() {
         String json = new Gson().toJson(MainActivity.adapter.getmData());
+
         SharedPref.write(SharedPref.TASKS_KEY, json);
     }
 

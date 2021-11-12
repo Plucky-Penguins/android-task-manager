@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +84,8 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subtaskNameView = itemView.findViewById(R.id.subtaskName);
+            subtaskNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20*MainActivity.textScale);
+
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

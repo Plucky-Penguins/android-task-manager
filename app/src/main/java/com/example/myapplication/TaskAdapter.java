@@ -3,7 +3,7 @@ package com.example.myapplication;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +33,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public List<Task> getmData() {
+        sortTaskList();
         return mData;
     }
 
@@ -43,6 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(mInflater.inflate(R.layout.recyclerview_row, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = mData.get(position);
@@ -55,14 +57,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         }
 
-
         if (completedCount == task.getSubtasks().size()) {
             task.setCompleted(true);
         } else {
             task.setCompleted(false);
         }
-
-
 
         holder.totalSubtaskView.setText(Integer.toString(completedCount) + "/" + Integer.toString(task.getSubtasks().size()) + " subtasks");
 
@@ -84,6 +83,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void loadTaskList(List<Task> taskList) {
         this.mData.clear();
         this.mData.addAll(taskList);
+        sortTaskList();
     }
 
     @Override
@@ -93,7 +93,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public void sortTaskList() {
         Collections.sort(mData);
-        notifyItemInserted(mData.size());
     }
 
     public void addTask(Task t) {
@@ -122,6 +121,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             totalSubtaskView = itemView.findViewById(R.id.totalSubtask);
             daysUntilDue = itemView.findViewById(R.id.daysUntilDue);
 
+            taskNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,25*MainActivity.textScale);
+            totalSubtaskView.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
+            daysUntilDue.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
+
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -134,7 +137,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public boolean onLongClick(View view) {
-            Log.d("helpme", "long clicked");
             Task t = mData.get(getAdapterPosition());
             MainActivity.deleteTaskDialog(t);
             return false;

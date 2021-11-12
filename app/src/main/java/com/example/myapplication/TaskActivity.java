@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -103,7 +103,10 @@ public class TaskActivity extends AppCompatActivity {
             builder.setView(promptsView);
 
             TextView tv = promptsView.findViewById(R.id.newSubtaskTitle);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,25*MainActivity.textScale);
+
             EditText et = promptsView.findViewById(R.id.newSubtaskName);
+            et.setTextSize(TypedValue.COMPLEX_UNIT_SP,20*MainActivity.textScale);
 
             builder
                     .setCancelable(false)

@@ -46,7 +46,10 @@ public class Task implements Comparable<Task>{
     }
 
     public long getDaysRemaining() {
-        return daysRemaining;
+        if (this.completed) {
+            return Integer.MAX_VALUE;
+        }
+        return this.daysRemaining;
     }
 
     public void setDaysRemaining(long daysRemaining) {
@@ -89,7 +92,7 @@ public class Task implements Comparable<Task>{
 
     @Override
     public String toString() {
-        return this.name + this.subtasks.toString();
+        return this.name + this.getDaysRemaining();
     }
 
     public int getProgress() {
