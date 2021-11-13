@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,11 @@ public class AndroidTaskManagerUnitTesting {
     @Before
     public void setup() {
         // instantiate and create all objects required before a test here
+    }
+
+    @After
+    public void teardown() {
+        // teardown or clear anything after a unit test has been run
     }
 
     @Test
