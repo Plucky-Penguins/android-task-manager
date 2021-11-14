@@ -122,28 +122,72 @@ public class AndroidTaskManagerUnitTesting {
 
     @Test
     public void test_SharedPref_jsonStringtoTaskList_InvalidJson() {
-
-        assert(true);
+        String invalidJsonArray = "[\"completed\":false," +
+                "\"daysRemaining\":1,\"dueDate\":" +
+                "{\"day\":12,\"month\":11,\"year\":2021}," +
+                "\"name\":\"testing\",\"storedDaysRemaining\":1," +
+                "\"subtasks\":" +
+                "[{\"completed\":false,\"name\":\"test\"}]}," +
+                "{\"completed\":true,\"daysRemaining\":2147483647," +
+                "\"dueDate\":{\"day\":12,\"month\":11,\"year\":2021}," +
+                "\"name\":\"add task\",\"storedDaysRemaining\":2147483647," +
+                "\"subtasks\":[]}";
+        assertThrows(JSONException.class, () -> {
+            SharedPref.jsonStringtoTaskList(invalidJsonArray);
+        });
     }
 
     @Test
-    public void test_SharedPref_jsonStringtoTaskList_EmptyTaskList() {
-        assert(true);
+    public void test_SharedPref_jsonStringtoTaskList_EmptyTaskList() throws JSONException {
+        String emptyTaskList = "[{}]";
+        assertThrows(JSONException.class, () -> {
+            SharedPref.jsonStringtoTaskList(emptyTaskList);
+        });
     }
 
     @Test
-    public void test_SharedPref_jsonStringtoTaskList_ThreeTasks() {
-        assert(true);
+    public void test_SharedPref_jsonStringtoTaskList_OneTask() throws JSONException {
+        String singleTaskList = "[{\"completed\":true," +
+                "\"daysRemaining\":2147483647," +
+                "\"dueDate\":{\"day\":12,\"month\":11,\"year\":2021}," +
+                "\"name\":\"add task\"," +
+                "\"storedDaysRemaining\":2147483647," +
+                "\"subtasks\":[]}]";
+        assertEquals(1, SharedPref.jsonStringtoTaskList(singleTaskList).size());
+        assertEquals("add task", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getName());
+        assertEquals("11 12", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getDueDate());
     }
 
     @Test
-    public void test_SharedPref_createLocalDateFromJson_SingleDigitMonth() {
-
+    public void test_SharedPref_createLocalDateFromJson_SingleDigitMonth() throws JSONException {
+        String singleTaskList = "[{\"completed\":true," +
+                "\"daysRemaining\":-305," +
+                "\"dueDate\":{\"day\":12,\"month\":1,\"year\":2021}," +
+                "\"name\":\"add task\"," +
+                "\"storedDaysRemaining\":-305," +
+                "\"subtasks\":[]}]";
+        assertEquals(1, SharedPref.jsonStringtoTaskList(singleTaskList).size());
+        assertEquals("add task", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getName());
+        assertEquals("01 12", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getDueDate());
     }
 
     @Test
-    public void test_SharedPref_createLocalDateFromJson_SingleDigitDay() {
-        assert(true);
+    public void test_SharedPref_createLocalDateFromJson_SingleDigitDay() throws JSONException {
+        String singleTaskList = "[{\"completed\":true," +
+                "\"daysRemaining\":2147483647," +
+                "\"dueDate\":{\"day\":1,\"month\":11,\"year\":2021}," +
+                "\"name\":\"add task\"," +
+                "\"storedDaysRemaining\":2147483647," +
+                "\"subtasks\":[]}]";
+        assertEquals(1, SharedPref.jsonStringtoTaskList(singleTaskList).size());
+        assertEquals("add task", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getName());
+        assertEquals("11 01", SharedPref.jsonStringtoTaskList(singleTaskList)
+                .get(0).getDueDate());
     }
 
     @Test
@@ -180,26 +224,5 @@ public class AndroidTaskManagerUnitTesting {
         test_task_1.getSubtasks().get(0).setCompleted(true);
         assertTrue(test_task_1.getSubtasks().get(0).isCompleted());
     }
-
-    @Test
-    public void test_SharedPref_createLocalDateFromJson_SingleDigitDayMonth() {
-        assert(true);
-    }
-
-    @Test
-    public void test_SharedPref_createLocalDateFromJson_DoubleDigitDayMonth() {
-        assert(true);
-    }
-
-    @Test
-    public void test_SharedPref_createLocalDateFromJson_PastYear() {
-        assert(true);
-    }
-
-    @Test
-    public void test_SharedPref_createLocalDateFromJson_FutureYear() {
-        assert(true);
-    }
-
 
 }
