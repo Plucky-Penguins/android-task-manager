@@ -82,21 +82,23 @@ public class AddActivity extends AppCompatActivity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedString = date.format(formatter);
 
-        if (selectedDayOfMonth == 0) {
-            selectedDayOfMonth = date.getDayOfMonth();
-        }
 
-        if (selectedYear == 0) {
-            selectedYear = date.getYear();
-        }
-
-        if (selectedMonth == 0) {
-            selectedMonth = Integer.parseInt(date.getMonth().toString());
-        }
 
         if (taskName.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Error: Specify the task name", Toast.LENGTH_SHORT).show();
         } else {
+            if (selectedDayOfMonth == 0) {
+                selectedDayOfMonth = date.getDayOfMonth();
+            }
+
+            if (selectedYear == 0) {
+                selectedYear = date.getYear();
+            }
+
+            if (selectedMonth == 0) {
+                selectedMonth = date.getMonth().getValue();
+            }
+
             Task newTask = new Task(taskName, LocalDate.of(selectedYear, Month.of(selectedMonth), selectedDayOfMonth));
             MainActivity.adapter.addTask(newTask);
             SharedPref.writeToTasks();
