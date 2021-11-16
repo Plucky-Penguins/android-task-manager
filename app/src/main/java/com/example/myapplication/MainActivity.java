@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
             SharedPref.currentDark = true;
         }
+        updateDarkMode();
     }
 
     private void updateTextSize() {
