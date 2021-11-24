@@ -16,7 +16,10 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        task().outputs.cacheIf(true)
     }
+
+
 
     buildTypes {
         release {
