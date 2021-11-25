@@ -1,17 +1,11 @@
 package com.example.myapplication;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-import android.accessibilityservice.AccessibilityService;
-
-import java.lang.reflect.Array;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
