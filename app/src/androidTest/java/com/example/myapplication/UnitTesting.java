@@ -6,18 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertThrows;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class AndroidTaskManagerUnitTesting {
+public class UnitTesting {
     Task test_task_1;
     Task test_task_2;
 
@@ -219,5 +213,4 @@ public class AndroidTaskManagerUnitTesting {
         test_task_1.getSubtasks().get(0).setCompleted(true);
         assertTrue(test_task_1.getSubtasks().get(0).isCompleted());
     }
-
 }
