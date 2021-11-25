@@ -47,9 +47,53 @@ public class ExampleInstrumentedTest {
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
+    @Test
+    public void testUICreateTask() {
+
+    }
 
     @Test
-    public void random() {
+    public void testUIDeleteTask() {
+
+    }
+
+    @Test
+    public void testUICreateMultipleTasks() {
+
+    }
+
+    @Test
+    public void testUICreateSubTaskInTask() {
+
+    }
+
+    @Test
+    public void testUIDeleteSubTask() {
+
+    }
+
+    @Test
+    public void testUICreateMultipleSubtasks() {
+
+    }
+
+    @Test
+    public void testUICreateOverdueTask() {
+
+    }
+
+    @Test
+    public void testUICreateFutureTask() {
+
+    }
+
+    @Test
+    public void testUICompleteSubTask() {
+
+    }
+
+    @Test
+    public void testUICompleteTaskByCompletingSubtasks() {
 
     }
 }
