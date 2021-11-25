@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
-import org.json.JSONException;
 import org.junit.After;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
