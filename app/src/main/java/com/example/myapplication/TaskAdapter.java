@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,14 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private LayoutInflater mInflater;
-    private List<Task> mData;
+    private final LayoutInflater mInflater;
+    private final List<Task> mData;
 
 
     public TaskAdapter(Context context, List<Task> data) {
@@ -44,6 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(mInflater.inflate(R.layout.recyclerview_row, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -57,26 +58,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         }
 
-        if (completedCount == task.getSubtasks().size()) {
-            task.setCompleted(true);
-        } else {
-            task.setCompleted(false);
-        }
+        task.setCompleted(completedCount == task.getSubtasks().size());
 
-        holder.totalSubtaskView.setText(Integer.toString(completedCount) + "/" + Integer.toString(task.getSubtasks().size()) + " subtasks");
+        holder.totalSubtaskView.setText(completedCount + "/" + task.getSubtasks().size() + " subtasks");
 
         if(task.isCompleted()) {
             holder.itemView.setBackgroundColor(Color.parseColor("#1abf00"));
             holder.daysUntilDue.setText("Task Completed");
         }
         else if(task.getDaysRemaining() < 0) {
-            Long overdue = Math.abs(task.getDaysRemaining());
+            long overdue = Math.abs(task.getDaysRemaining());
             holder.itemView.setBackgroundColor(Color.parseColor("#FF7474"));
-            holder.daysUntilDue.setText(Long.toString(overdue) + " days overdue!");
+            holder.daysUntilDue.setText(overdue + " days overdue!");
         }
         else {
             holder.itemView.setBackgroundColor(Color.parseColor("#E1E1E1"));
-            holder.daysUntilDue.setText(Long.toString(task.getDaysRemaining()) + " days remaining");
+            holder.daysUntilDue.setText(task.getDaysRemaining() + " days remaining");
         }
     }
 
@@ -102,6 +99,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         SharedPref.writeToTasks();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void deleteTask(Task t) {
         mData.remove(t);
@@ -110,9 +108,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView taskNameView;
-        TextView totalSubtaskView;
-        TextView daysUntilDue;
+        final TextView taskNameView;
+        final TextView totalSubtaskView;
+        final TextView daysUntilDue;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -19,7 +19,4 @@
 
     </style>
 
-    <style name="recyclerTextView">
-        <item name="android:textColor">@color/black</item>
-    </style>
 </resources>

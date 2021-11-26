@@ -4,20 +4,20 @@
 
     <item
         android:id="@+id/darkButton"
-        android:title="darkButton"
-        app:showAsAction="always"
+        android:title="@string/darkbutton"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/baseline_dark_mode_20"/>
 
     <item
         android:id="@+id/textButton"
-        android:title="textButton"
-        app:showAsAction="always"
+        android:title="@string/textbutton"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/baseline_format_size_18"/>
 
     <item
         android:id="@+id/addTaskButton"
-        android:title="addTaskButton"
-        app:showAsAction="always"
+        android:title="@string/addtaskbutton"
+        app:showAsAction="ifRoom"
         android:layout_height="30dp"
         android:layout_width="30dp"
         android:icon="@drawable/baseline_add_circle_24"/>

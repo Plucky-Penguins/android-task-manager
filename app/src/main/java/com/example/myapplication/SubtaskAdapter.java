@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,8 +19,8 @@ import java.util.List;
 
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHolder> {
 
-    private LayoutInflater mInflater;
-    private List<Subtask> mData;
+    private final LayoutInflater mInflater;
+    private final List<Subtask> mData;
 
     public SubtaskAdapter(Context context, List<Subtask> data) {
         this.mInflater = LayoutInflater.from(context);
@@ -57,6 +57,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         notifyItemInserted(mData.size());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void addSubtask(Subtask st) {
         mData.add(st);
@@ -67,6 +68,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         SharedPref.writeToTasks();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void deleteSubtask(Subtask st) {
         mData.remove(st);
@@ -79,7 +81,7 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView subtaskNameView;
+        final TextView subtaskNameView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,14 +93,11 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskAdapter.ViewHold
         }
 
 
+        @SuppressLint("NotifyDataSetChanged")
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
-            if (mData.get(getAdapterPosition()).isCompleted()) {
-                mData.get(getAdapterPosition()).setCompleted(false);
-            } else {
-                mData.get(getAdapterPosition()).setCompleted(true);
-            }
+            mData.get(getAdapterPosition()).setCompleted(!mData.get(getAdapterPosition()).isCompleted());
             SharedPref.writeToTasks();
             TaskActivity.adapter.notifyItemChanged(getAdapterPosition());
             TaskActivity.updateProgressBar();

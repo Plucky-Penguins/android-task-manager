@@ -2,20 +2,19 @@ package com.example.myapplication;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.time.temporal.ChronoUnit;
 
 public class Task implements Comparable<Task>{
     private String name;
-    private ArrayList<Subtask> subtasks;
+    private final ArrayList<Subtask> subtasks;
     private long daysRemaining;
-    private LocalDate dueDate;
+    private final LocalDate dueDate;
     private boolean completed;
     private long storedDaysRemaining;
 
@@ -90,6 +89,7 @@ public class Task implements Comparable<Task>{
         return Long.compare(this.getDaysRemaining(), task.getDaysRemaining());
     }
 
+    @NonNull
     @Override
     public String toString() {
         return this.name + this.getDaysRemaining();

@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import androidx.annotation.RequiresApi;
@@ -10,28 +9,18 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static Task currentTask = null;
     public static int textScale = 1;
 
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -88,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDarkMode() {
-        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
         if (darkMode) {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
             SharedPref.currentDark = true;
@@ -100,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toggleDarkMode() {
-        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+        boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
 
         if (darkMode) {
             SharedPref.write(SharedPref.DARKMODEKEY, false);
@@ -115,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTextSize() {
-        Boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
+        boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
         if (largeText) {
             textScale = 2;
         } else {
@@ -124,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         refreshAdapter();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshAdapter() {
         recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(null);
@@ -133,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toggleTextSize() {
-        Boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
+        boolean largeText = SharedPref.read(SharedPref.LARGETEXTKEY, SharedPref.DEFAULT_LARGE);
         if (largeText) {
             SharedPref.write(SharedPref.LARGETEXTKEY, false);
             textScale = 1;
@@ -151,26 +142,18 @@ public class MainActivity extends AppCompatActivity {
         SharedPref.writeToTasks();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void deleteTaskDialog(Task t) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
         builder
                 .setTitle("Delete Task " + '"' + t.getName() + "?" + '"')
                 .setMessage("Are you sure you want to delete this task?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.adapter.deleteTask(t);
-                        Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
-                    }
+                .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                    MainActivity.adapter.deleteTask(t);
+                    Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                .setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.cancel());
         if (SharedPref.currentDark) {
             builder
                     .setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + t.getName() + '\"' + "?" + "</font>"));
@@ -197,19 +180,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch(id) {
-            case R.id.addTaskButton:
-                Intent i =  new Intent(getApplicationContext(), AddActivity.class);
-                startActivity(i);
-                break;
-            case R.id.textButton:
-                toggleTextSize();
-                break;
-            case R.id.darkButton:
-                toggleDarkMode();
-                break;
-            default:
-                break;
+        if (id == R.id.addTaskButton) {
+            Intent i =  new Intent(getApplicationContext(), AddActivity.class);
+            startActivity(i);
+        }
+        else if (id == R.id.textButton) {
+            toggleTextSize();
+        }
+        else if (id == R.id.darkButton) {
+            toggleDarkMode();
         }
         return super.onOptionsItemSelected(item);
     }
