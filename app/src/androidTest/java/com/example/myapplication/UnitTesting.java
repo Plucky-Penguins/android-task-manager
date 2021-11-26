@@ -4,13 +4,18 @@ import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+@RunWith(AndroidJUnit4.class)
 public class UnitTesting {
     Task test_task_1;
     Task test_task_2;
