@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @RunWith(AndroidJUnit4.class)
-public class UnitTesting {
+public class TaskManagerUnitTesting {
     Task test_task_1;
     Task test_task_2;
 

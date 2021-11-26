@@ -1,5 +1,15 @@
 package com.example.myapplication;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import android.content.Context;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -12,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+import static java.util.concurrent.CompletableFuture.anyOf;
+
 import org.junit.After;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -27,7 +39,7 @@ import androidx.test.uiautomator.Until;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class TaskManagerInstrumentedTest {
 
     private UiDevice device;
 
@@ -48,8 +60,12 @@ public class ExampleInstrumentedTest {
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void testUICreateTask() {
-
+    public void testUIOpenTaskCreateMenu() {
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        onView(withContentDescription(R.string.addTaskButton)).perform(click());
+        onView(withId(R.id.editTextTaskName)).check(matches(isDisplayed()));
+        onView(withId(R.id.editTextTaskName)).perform(typeText(""));
+        onView(withId(R.id.addNewTaskButton)).check(matches(isDisplayed()));
     }
 
     @Test

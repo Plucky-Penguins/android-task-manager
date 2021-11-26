@@ -16,8 +16,8 @@
 
     <item
         android:id="@+id/addTaskButton"
-        android:title="addTaskButton"
-        app:showAsAction="always"
+        android:title="@string/addTaskButton"
+        app:showAsAction="ifRoom"
         android:layout_height="30dp"
         android:layout_width="30dp"
         android:icon="@drawable/baseline_add_circle_24"/>
