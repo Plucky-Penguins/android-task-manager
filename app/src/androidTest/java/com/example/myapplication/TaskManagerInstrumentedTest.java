@@ -38,6 +38,8 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
+import com.example.myapplication.Controller.MainActivity;
+
 /**
  * Instrumented test, which will execute on an Android device.
  *

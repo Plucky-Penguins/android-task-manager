@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Controller;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +21,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Model.Subtask;
+import com.example.myapplication.R;
+import com.example.myapplication.SharedPref;
+import com.example.myapplication.Adapter.SubtaskAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;

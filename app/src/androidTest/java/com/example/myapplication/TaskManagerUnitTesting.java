@@ -10,6 +10,9 @@ import static org.junit.Assert.*;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.myapplication.Model.Subtask;
+import com.example.myapplication.Model.Task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;

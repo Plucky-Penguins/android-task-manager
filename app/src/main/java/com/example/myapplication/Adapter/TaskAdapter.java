@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Controller.MainActivity;
+import com.example.myapplication.Model.Subtask;
+import com.example.myapplication.Model.Task;
+import com.example.myapplication.R;
+import com.example.myapplication.SharedPref;
 
 import java.util.Collections;
 import java.util.List;
@@ -119,7 +125,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             totalSubtaskView = itemView.findViewById(R.id.totalSubtask);
             daysUntilDue = itemView.findViewById(R.id.daysUntilDue);
 
-            taskNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,25*MainActivity.textScale);
+            taskNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP,25* MainActivity.textScale);
             totalSubtaskView.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
             daysUntilDue.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
 

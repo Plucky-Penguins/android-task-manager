@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Controller;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.Controller.MainActivity;
+import com.example.myapplication.Model.Task;
+import com.example.myapplication.R;
+import com.example.myapplication.SharedPref;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -32,7 +37,7 @@ public class AddActivity extends AppCompatActivity {
         findViewById(R.id.addNewTaskButton).setOnClickListener(view -> addTask());
 
         EditText et = findViewById(R.id.editTextTaskName);
-        et.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);
+        et.setTextSize(TypedValue.COMPLEX_UNIT_SP,15* MainActivity.textScale);
 
         Button bt = findViewById(R.id.addNewTaskButton);
         bt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15*MainActivity.textScale);

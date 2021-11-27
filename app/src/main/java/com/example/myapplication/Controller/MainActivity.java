@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Controller;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
@@ -18,6 +18,11 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.myapplication.Model.Task;
+import com.example.myapplication.R;
+import com.example.myapplication.SharedPref;
+import com.example.myapplication.Adapter.TaskAdapter;
 
 import org.json.JSONException;
 

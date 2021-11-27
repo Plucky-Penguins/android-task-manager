@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Controller.MainActivity;
+import com.example.myapplication.Controller.TaskActivity;
+import com.example.myapplication.Model.Subtask;
+import com.example.myapplication.R;
+import com.example.myapplication.SharedPref;
 
 import java.util.Collections;
 import java.util.List;
