@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import androidx.annotation.RequiresApi;
@@ -32,11 +31,12 @@ import org.json.JSONObject;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
-
     private RecyclerView recyclerView;
 
     public static TaskAdapter adapter = null;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static int textScale = 1;
 
     private static Context mContext;
+    private static Vector<AlertDialog> dialogs = new Vector<AlertDialog>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext = this;
+        mContext = this.getApplicationContext();
         recyclerView = findViewById(R.id.rvTasks);
 
         SharedPref.init(getApplicationContext());
@@ -61,12 +62,18 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Task> tasks = new ArrayList<>();
         adapter = new TaskAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
+
+        for (AlertDialog d : dialogs) {
+            d.dismiss();
+        }
+        refreshAdapter();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onResume() {
         super.onResume();
+        mContext = this;
         String jsonRead = SharedPref.read(SharedPref.TASKS_KEY, SharedPref.DEFAULT_TASKS);
 
         try {
@@ -91,25 +98,8 @@ public class MainActivity extends AppCompatActivity {
         Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
         if (darkMode) {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-            SharedPref.currentDark = true;
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            SharedPref.currentDark = false;
-        }
-        refreshAdapter();
-    }
-
-    private void toggleDarkMode() {
-        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
-
-        if (darkMode) {
-            SharedPref.write(SharedPref.DARKMODEKEY, false);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            SharedPref.currentDark = false;
-        } else {
-            SharedPref.write(SharedPref.DARKMODEKEY, true);
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-            SharedPref.currentDark = true;
         }
         refreshAdapter();
     }
@@ -124,12 +114,17 @@ public class MainActivity extends AppCompatActivity {
         refreshAdapter();
     }
 
-    public void refreshAdapter() {
-        recyclerView.setAdapter(null);
-        recyclerView.setLayoutManager(null);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter.notifyDataSetChanged();
+    private void toggleDarkMode() {
+        Boolean darkMode = SharedPref.read(SharedPref.DARKMODEKEY, SharedPref.DEFAULT_DARK);
+
+        if (darkMode) {
+            SharedPref.write(SharedPref.DARKMODEKEY, false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            SharedPref.write(SharedPref.DARKMODEKEY, true);
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+        }
+        updateDarkMode();
     }
 
     private void toggleTextSize() {
@@ -144,6 +139,13 @@ public class MainActivity extends AppCompatActivity {
         updateTextSize();
     }
 
+    public void refreshAdapter() {
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onPause() {
@@ -152,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void deleteTaskDialog(Task t) {
+        for (AlertDialog d : dialogs) {
+            d.dismiss();
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
         builder
@@ -172,11 +178,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         if (SharedPref.currentDark) {
-            builder
-                    .setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + t.getName() + '\"' + "?" + "</font>"));
+            builder.setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + t.getName() + '\"' + "?" + "</font>"));
         }
 
         AlertDialog alertDialog = builder.create();
+        dialogs.add(alertDialog);
         alertDialog.show();
     }
 
