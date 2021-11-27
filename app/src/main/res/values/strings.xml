@@ -2,6 +2,10 @@
     <string name="app_name">Android Task Manager</string>
     <string name="add">Add</string>
     <string name="task_name">Task Name</string>
-    <string name="addTaskButton">addTaskButton</string>
-    <string name="calendarView">calendarView</string>
+    <string name="subtask_name">Subtask Name</string>
+    <string name="add_subtask">Add Subtask</string>
+    <string name="darkbutton">darkButton</string>
+    <string name="textbutton">textButton</string>
+    <string name="addtaskbutton">addTaskButton</string>
+    <string name="addsubtaskbutton">addSubtaskButton</string>
 </resources>

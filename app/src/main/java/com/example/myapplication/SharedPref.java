@@ -65,18 +65,8 @@ public class SharedPref {
     }
 
 
-
-    public static Integer read(String key, int defValue) {
-        return mSharedPref.getInt(key, defValue);
-    }
-
     public static boolean read(String key, boolean defValue) {
         return mSharedPref.getBoolean(key, defValue);
-    }
-
-    public static void write(String key, Integer value) {
-        SharedPreferences.Editor prefsEditor = mSharedPref.edit();
-        prefsEditor.putInt(key, value).apply();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -115,9 +105,9 @@ public class SharedPref {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static LocalDate createLocalDateFromJson(JSONObject dueDate) {
         LocalDate localDate = null;
-        String day_string = null;
-        String month_string = null;
-        String year_string = null;
+        String day_string;
+        String month_string;
+        String year_string;
         try {
             int day = (int) dueDate.get("day");
             int month = (int) dueDate.get("month");

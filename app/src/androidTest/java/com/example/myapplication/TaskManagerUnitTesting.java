@@ -60,10 +60,8 @@ public class TaskManagerUnitTesting {
 
     @Test
     public void test_failCreateTask() {
-        assertThrows(DateTimeParseException.class, () -> {
-            new Task("current task",
-                    LocalDate.parse("01-01-2021"));
-        });
+        assertThrows(DateTimeParseException.class, () -> new Task("current task",
+                LocalDate.parse("01-01-2021")));
     }
 
     @Test
@@ -126,17 +124,13 @@ public class TaskManagerUnitTesting {
                 "\"dueDate\":{\"day\":12,\"month\":11,\"year\":2021}," +
                 "\"name\":\"add task\",\"storedDaysRemaining\":2147483647," +
                 "\"subtasks\":[]}";
-        assertThrows(JSONException.class, () -> {
-            SharedPref.jsonStringtoTaskList(invalidJsonArray);
-        });
+        assertThrows(JSONException.class, () -> SharedPref.jsonStringtoTaskList(invalidJsonArray));
     }
 
     @Test
-    public void test_SharedPref_jsonStringtoTaskList_EmptyTaskList() throws JSONException {
+    public void test_SharedPref_jsonStringtoTaskList_EmptyTaskList() {
         String emptyTaskList = "[{}]";
-        assertThrows(JSONException.class, () -> {
-            SharedPref.jsonStringtoTaskList(emptyTaskList);
-        });
+        assertThrows(JSONException.class, () -> SharedPref.jsonStringtoTaskList(emptyTaskList));
     }
 
     @Test

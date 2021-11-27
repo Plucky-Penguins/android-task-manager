@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
+
 public class Subtask implements Comparable<Subtask>{
     private String name;
     private boolean completed;
@@ -25,6 +27,7 @@ public class Subtask implements Comparable<Subtask>{
         this.completed = completed;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return this.name + " | " + this.completed;
@@ -35,6 +38,7 @@ public class Subtask implements Comparable<Subtask>{
         return 0;
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -42,10 +46,6 @@ public class Subtask implements Comparable<Subtask>{
         }
 
         final Subtask other = (Subtask) obj;
-        if (other.getName().equals(this.getName())) {
-            return true;
-        }
-
-        return false;
+        return other.getName().equals(this.getName());
     }
 }

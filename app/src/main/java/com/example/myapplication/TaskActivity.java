@@ -1,24 +1,17 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,13 +22,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TaskActivity extends AppCompatActivity {
     public static SubtaskAdapter adapter;
+
+    @SuppressLint("StaticFieldLeak")
     public static ProgressBar progressBar;
+
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -43,7 +39,7 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        getSupportActionBar().setTitle(MainActivity.currentTask.getName());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(MainActivity.currentTask.getName());
         mContext = this;
         
         ArrayList<Subtask> tasks = MainActivity.currentTask.getSubtasks();
@@ -68,25 +64,17 @@ public class TaskActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void deleteTaskDialog(Subtask st) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder
                 .setTitle("Delete Subtask " + '"' + st.getName() + '"' + "?" )
                 .setMessage("Are you sure you want to delete this subtask?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        TaskActivity.adapter.deleteSubtask(st);
-                        Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
-                    }
+                .setPositiveButton(android.R.string.yes, (dialogInterface, i) -> {
+                    TaskActivity.adapter.deleteSubtask(st);
+                    Toast.makeText(mContext.getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                .setNegativeButton(android.R.string.no, (dialogInterface, i) -> dialogInterface.cancel());
         if (SharedPref.currentDark) {
             builder
                     .setTitle(Html.fromHtml("<font color='#FFFFFF'>" + "Delete Task " + '\"' + st.getName() + '\"' + "?" + "</font>"));
@@ -99,6 +87,7 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -128,19 +117,8 @@ public class TaskActivity extends AppCompatActivity {
 
             builder
                     .setCancelable(false)
-                    .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            adapter.addSubtask(new Subtask(et.getText().toString()));
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
+                    .setPositiveButton("Add", (dialogInterface, i) -> adapter.addSubtask(new Subtask(et.getText().toString())))
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
