@@ -22,7 +22,7 @@ public class SharedPref {
 
     public static final String DARKMODEKEY = "DARKMODE";
     public static final boolean DEFAULT_DARK = false;
-    public static boolean currentDark = false;
+    public static final boolean currentDark = false;
 
     public static final String LARGETEXTKEY = "LARGETEXT";
     public static final boolean DEFAULT_LARGE = false;

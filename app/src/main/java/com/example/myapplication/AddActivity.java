@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -73,8 +72,8 @@ public class AddActivity extends AppCompatActivity {
             Task newTask = new Task(taskName, LocalDate.of(selectedYear, Month.of(selectedMonth), selectedDayOfMonth));
             MainActivity.adapter.addTask(newTask);
             SharedPref.writeToTasks();
-            Intent i =  new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(i);
+
+            finish();
         }
     }
 }

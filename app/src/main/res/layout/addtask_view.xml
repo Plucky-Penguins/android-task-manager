@@ -5,7 +5,8 @@
     android:layout_height="200dp"
     android:layout_marginTop="100dp"
     android:layout_gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/addTaskLinearLayout">
 
         <TextView
             android:id="@+id/newSubtaskTitle"

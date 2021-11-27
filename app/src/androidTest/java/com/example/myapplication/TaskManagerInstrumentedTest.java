@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -31,7 +30,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,16 +37,6 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
-import static java.util.concurrent.CompletableFuture.anyOf;
-
-import org.junit.After;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.uiautomator.By;
-import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObjectNotFoundException;
-import androidx.test.uiautomator.UiSelector;
-import androidx.test.uiautomator.Until;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -57,13 +45,6 @@ import androidx.test.uiautomator.Until;
  */
 @RunWith(AndroidJUnit4.class)
 public class TaskManagerInstrumentedTest {
-
-    private UiDevice device;
-
-    @Before
-    public void setUp() {
-        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-    }
 
     @Test
     public void useAppContext() {
@@ -79,7 +60,7 @@ public class TaskManagerInstrumentedTest {
     @Test
     public void testUIOpenTaskCreateMenu() {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-        onView(withContentDescription(R.string.addTaskButton)).perform(click());
+        onView(withContentDescription(R.string.addtaskbutton)).perform(click());
         onView(withId(R.id.editTextTaskName)).check(matches(isDisplayed()));
         onView(withId(R.id.editTextTaskName)).perform(typeText(""));
         onView(withId(R.id.addNewTaskButton)).check(matches(isDisplayed()));
