@@ -8,4 +8,5 @@
     <string name="textbutton">textButton</string>
     <string name="addtaskbutton">addTaskButton</string>
     <string name="addsubtaskbutton">addSubtaskButton</string>
+    <string name="calendarView">calendarView</string>
 </resources>
